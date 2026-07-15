@@ -1,0 +1,52 @@
+name: Daily post
+
+on:
+  schedule:
+    - cron: '0 4 * * *' # 09:30 IST
+  workflow_dispatch:
+
+jobs:
+  preview:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          
+      - name: Install dependencies
+        run: pip install PyYAML
+        
+      - name: Preview next item
+        run: python scripts/preview.py >> $GITHUB_STEP_SUMMARY
+        
+  publish:
+    needs: preview
+    environment: production
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          
+      - name: Mark as published
+        run: python scripts/post.py
+        
+      - name: Commit changes
+        run: |
+          git config --global user.name 'github-actions[bot]'
+          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+          git add queue.yaml
+          git diff --quiet && git diff --staged --quiet || (git commit -m "chore: update queue.yaml after publishing [skip ci]" && git push)

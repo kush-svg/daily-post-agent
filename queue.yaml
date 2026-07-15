@@ -1,0 +1,17 @@
+- status: pending
+  text: |
+    the X API charges $0.015 to post a tweet, or $0.20 if the tweet contains a link
+    so now I'm one of those guys who puts the link in the reply. not for engagement reasons. I'm just cheap
+  reddit_subreddit: "programming"
+  reddit_title: "PSA: if you're automating Reddit posts, the API returns success even when you're shadowbanned"
+  reddit_post_type: "self"
+  url: "https://github.com"
+  
+- status: pending
+  text: |
+    spent 40 minutes convinced my posting bot was broken because nothing was showing up on reddit
+    bot was fine. I was shadowbanned. the API returns 200, the response has a real permalink, everything looks perfect, and nobody on earth can see the post
+    great feature
+  reddit_subreddit: "learnprogramming"
+  reddit_title: "Shadowbans are invisible on Reddit API - here's how to check"
+  reddit_post_type: "self"
